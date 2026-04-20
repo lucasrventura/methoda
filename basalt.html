@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Basalt — Consultoria de projetos, sistemas e IA para PMEs</title>
+<meta name="description" content="Basalt reconstrói o sistema operacional de empresas em fase de scaling chaos. Em 8 semanas, do improviso à fundação sólida. Notion, processos e agentes de IA que o time vai realmente usar." />
+<meta name="theme-color" content="#0D0D0D" />
+<meta property="og:title" content="Basalt — Build on bedrock." />
+<meta property="og:description" content="Consultoria de projetos, sistemas e IA para PMEs em fase de scaling chaos." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 52'%3E%3Cpath fill='%233D1465' d='M40 0h20l10 17.32L60 34.64H40L30 17.32zM10 17.32h20l10 17.32L30 51.96H10L0 34.64zM60 17.32h20l10 17.32L80 51.96H60L50 34.64z'/%3E%3C/svg%3E" />
+<style>
+  /* ---------- Reset & tokens ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body, h1, h2, h3, h4, p, figure, blockquote, dl, dd, ul, ol { margin: 0; padding: 0; }
+  ul, ol { list-style: none; }
+  img, svg { display: block; max-width: 100%; }
+  button { font: inherit; cursor: pointer; border: 0; background: transparent; color: inherit; }
+  a { color: inherit; text-decoration: none; }
+
+  :root {
+    --bg:            #0B0B0D;
+    --surface:       #121215;
+    --surface-2:     #1A1A1F;
+    --text:          #F4F4F5;
+    --text-muted:    #9A9AA3;
+    --text-dim:      #5C5C66;
+    --border:        rgba(255, 255, 255, 0.07);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --purple:        #3D1465;
+    --purple-bright: #6B2DA8;
+    --purple-glow:   rgba(61, 20, 101, 0.35);
+    --purple-soft:   rgba(107, 45, 168, 0.10);
+
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    --max:    1200px;
+    --gutter: clamp(1.25rem, 4vw, 2.5rem);
+
+    --radius-sm: 6px;
+    --radius:    10px;
+    --radius-lg: 16px;
+
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.55;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  /* ---------- Typography ---------- */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .eyebrow::before {
+    content: "";
+    width: 18px;
+    height: 1px;
+    background: var(--text-dim);
+  }
+
+  h1, h2, h3 {
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  h1 {
+    font-size: clamp(2.5rem, 5.4vw, 4.75rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 500;
+  }
+  h2 {
+    font-size: clamp(2rem, 3.8vw, 3.25rem);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+  }
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+  p { color: var(--text-muted); }
+  .lead {
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 48ch;
+  }
+
+  /* ---------- Layout utilities ---------- */
+  .container {
+    width: 100%;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+  }
+  section { padding: clamp(5rem, 10vw, 8.5rem) 0; position: relative; }
+  .section-head {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+    max-width: 68ch;
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--border);
+    width: 100%;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.3rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.92rem;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    transition: all 0.2s var(--ease);
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+    border: 1px solid var(--text);
+  }
+  .btn-primary:hover {
+    background: #FFFFFF;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 30px -10px rgba(255, 255, 255, 0.2);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border-strong);
+  }
+  .btn-ghost:hover {
+    background: var(--surface);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+  .btn-purple {
+    background: var(--purple);
+    color: #FFFFFF;
+    border: 1px solid var(--purple);
+  }
+  .btn-purple:hover {
+    background: var(--purple-bright);
+    border-color: var(--purple-bright);
+    box-shadow: 0 0 0 6px var(--purple-soft);
+  }
+  .btn svg.arrow {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s var(--ease);
+  }
+  .btn:hover svg.arrow { transform: translateX(3px); }
+
+  /* ---------- Brand logo ---------- */
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: var(--text);
+  }
+  .brand-mark {
+    width: 32px;
+    height: auto;
+    color: var(--purple-bright);
+  }
+  .brand-mark polygon {
+    stroke: var(--bg);
+    stroke-width: 1.2;
+    stroke-linejoin: miter;
+  }
+  .brand-word {
+    font-weight: 500;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+  }
+
+  /* ---------- Header ---------- */
+  header.site {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(11, 11, 13, 0.75);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+  }
+  header.site.scrolled {
+    border-bottom-color: var(--border);
+    background: rgba(11, 11, 13, 0.88);
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 0;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .nav-links a {
+    font-size: 0.91rem;
+    color: var(--text-muted);
+    transition: color 0.15s var(--ease);
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { display: flex; align-items: center; gap: 0.75rem; }
+  .nav-toggle {
+    display: none;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-toggle span {
+    display: block;
+    position: relative;
+    width: 16px;
+    height: 1.5px;
+    background: var(--text);
+  }
+  .nav-toggle span::before,
+  .nav-toggle span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 16px;
+    height: 1.5px;
+    background: var(--text);
+  }
+  .nav-toggle span::before { top: -5px; }
+  .nav-toggle span::after  { top: 5px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding-top: clamp(4rem, 8vw, 7rem);
+    padding-bottom: clamp(5rem, 10vw, 8rem);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.55;
+    background:
+      radial-gradient(60% 50% at 15% 10%, var(--purple-glow) 0%, transparent 60%),
+      radial-gradient(45% 40% at 90% 90%, rgba(107, 45, 168, 0.18) 0%, transparent 70%);
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+  .hero-pattern {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='52' viewBox='0 0 90 52'><g fill='none' stroke='%23ffffff' stroke-opacity='0.04' stroke-width='1'><polygon points='40,0 60,0 70,17.32 60,34.64 40,34.64 30,17.32'/><polygon points='10,17.32 30,17.32 40,34.64 30,51.96 10,51.96 0,34.64'/><polygon points='60,17.32 80,17.32 90,34.64 80,51.96 60,51.96 50,34.64'/></g></svg>");
+    background-size: 180px 104px;
+    mask-image: linear-gradient(to bottom, black 40%, transparent 90%);
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 2rem;
+    max-width: 58rem;
+  }
+  .hero h1 { max-width: 22ch; }
+  .hero h1 .accent {
+    color: var(--purple-bright);
+    font-style: normal;
+  }
+  .hero .lead { max-width: 52ch; font-size: clamp(1.1rem, 1.5vw, 1.35rem); }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 0.75rem;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+    flex-wrap: wrap;
+  }
+  .hero-meta .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #3CB371;
+    box-shadow: 0 0 0 4px rgba(60, 179, 113, 0.15);
+    display: inline-block;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+
+  /* ---------- Problem section ---------- */
+  .problem {
+    border-top: 1px solid var(--border);
+    background:
+      linear-gradient(180deg, var(--bg) 0%, #0E0E11 100%);
+  }
+  .quotes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .quote {
+    padding: 2rem;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    gap: 1rem;
+    align-content: space-between;
+    min-height: 200px;
+    position: relative;
+    transition: background 0.25s var(--ease);
+  }
+  .quote:hover { background: var(--surface); }
+  .quote blockquote {
+    font-size: 1.1rem;
+    line-height: 1.45;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .quote blockquote::before {
+    content: "\201C";
+    color: var(--purple-bright);
+    font-size: 1.4em;
+    line-height: 0;
+    margin-right: 0.05em;
+  }
+  .quote blockquote::after {
+    content: "\201D";
+    color: var(--purple-bright);
+    font-size: 1.4em;
+    line-height: 0;
+  }
+  .quote cite {
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .problem-closer {
+    margin-top: 3rem;
+    padding: 2rem;
+    border-left: 2px solid var(--purple-bright);
+    background: var(--purple-soft);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    max-width: 68ch;
+  }
+  .problem-closer p {
+    color: var(--text);
+    font-size: 1.1rem;
+    line-height: 1.55;
+  }
+  .problem-closer strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ---------- Methodology ---------- */
+  .method {
+    border-top: 1px solid var(--border);
+  }
+  .method-meta {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 3.5rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .method-meta span strong {
+    color: var(--text);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .phases {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .phase {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    gap: 2rem;
+    padding: 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
+    position: relative;
+    overflow: hidden;
+  }
+  .phase::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--purple);
+    opacity: 0;
+    transition: opacity 0.2s var(--ease);
+  }
+  .phase:hover {
+    border-color: var(--border-strong);
+    transform: translateX(2px);
+  }
+  .phase:hover::before { opacity: 1; }
+  .phase-num {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    display: grid;
+    gap: 0.4rem;
+    align-content: start;
+  }
+  .phase-num .num {
+    display: inline-block;
+    font-size: 2.5rem;
+    line-height: 1;
+    font-weight: 300;
+    color: var(--purple-bright);
+    letter-spacing: -0.02em;
+    font-family: var(--font-sans);
+  }
+  .phase-body { display: grid; gap: 0.75rem; }
+  .phase-body h3 {
+    font-size: 1.35rem;
+    font-weight: 500;
+  }
+  .phase-body .question {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+  }
+  .phase-body .description {
+    color: var(--text-muted);
+    font-size: 0.98rem;
+    line-height: 1.55;
+    max-width: 60ch;
+  }
+  .phase-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    color: var(--text-muted);
+    align-self: start;
+    white-space: nowrap;
+  }
+  .phase-tag.waterfall {
+    color: #C4A9F0;
+    border-color: rgba(196, 169, 240, 0.3);
+  }
+  .phase-tag.agile {
+    color: #7EBDA8;
+    border-color: rgba(126, 189, 168, 0.3);
+  }
+
+  /* ---------- Services ---------- */
+  .services {
+    border-top: 1px solid var(--border);
+    background: #0E0E11;
+  }
+  .offers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .offer {
+    padding: 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+    transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
+    position: relative;
+  }
+  .offer:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+  }
+  .offer.featured {
+    border-color: rgba(107, 45, 168, 0.4);
+    background:
+      linear-gradient(180deg, rgba(61, 20, 101, 0.15) 0%, var(--surface) 60%);
+  }
+  .offer.featured::before {
+    content: "Caminho canônico";
+    position: absolute;
+    top: -10px;
+    left: 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    background: var(--purple);
+    color: #FFF;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+  }
+  .offer-head { display: grid; gap: 0.4rem; }
+  .offer-name {
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--purple-bright);
+  }
+  .offer-title {
+    font-size: 1.6rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .offer-duration {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+  .offer p { font-size: 0.98rem; line-height: 1.55; }
+  .offer ul { display: grid; gap: 0.6rem; }
+  .offer li {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    padding-left: 1.3rem;
+    position: relative;
+    line-height: 1.5;
+  }
+  .offer li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 6px; height: 6px;
+    border-radius: 1px;
+    background: var(--purple-bright);
+    transform: rotate(45deg);
+  }
+
+  /* ---------- For whom ---------- */
+  .for-whom { border-top: 1px solid var(--border); }
+  .fit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .fit-col {
+    padding: 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+  }
+  .fit-col h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  .fit-col h3 .badge {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+  }
+  .fit-col.yes h3 .badge {
+    background: rgba(126, 189, 168, 0.12);
+    color: #7EBDA8;
+    border: 1px solid rgba(126, 189, 168, 0.2);
+  }
+  .fit-col.no h3 .badge {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-muted);
+    border: 1px solid var(--border-strong);
+  }
+  .fit-col ul { display: grid; gap: 0.85rem; }
+  .fit-col li {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+    padding-left: 1.5rem;
+    position: relative;
+  }
+  .fit-col.yes li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0.45em;
+    width: 10px; height: 6px;
+    border-left: 1.5px solid #7EBDA8;
+    border-bottom: 1.5px solid #7EBDA8;
+    transform: rotate(-45deg);
+  }
+  .fit-col.no li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0.65em;
+    width: 10px; height: 1.5px;
+    background: var(--text-dim);
+  }
+
+  /* ---------- Results / Promises ---------- */
+  .results {
+    border-top: 1px solid var(--border);
+    background: #0E0E11;
+  }
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .metric {
+    padding: 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    display: grid;
+    gap: 0.75rem;
+  }
+  .metric-value {
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--text);
+    font-feature-settings: "ss01", "tnum";
+  }
+  .metric-value .symbol {
+    color: var(--purple-bright);
+    font-size: 0.6em;
+    vertical-align: super;
+    margin-left: 2px;
+  }
+  .metric-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+  .metric-note {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .guarantee {
+    padding: 1.5rem 2rem;
+    border: 1px dashed rgba(107, 45, 168, 0.35);
+    border-radius: var(--radius);
+    background: var(--purple-soft);
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.55;
+  }
+  .guarantee strong {
+    color: var(--purple-bright);
+    font-weight: 500;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .testimonials {
+    margin-top: 4rem;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  .testimonial {
+    padding: 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    display: grid;
+    gap: 1.25rem;
+    align-content: space-between;
+    min-height: 220px;
+  }
+  .testimonial.placeholder {
+    border-style: dashed;
+    border-color: var(--border-strong);
+    background: transparent;
+  }
+  .testimonial.placeholder .t-quote {
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  .t-quote { font-size: 1rem; line-height: 1.55; color: var(--text); }
+  .t-author {
+    display: grid;
+    gap: 0.15rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .t-author strong {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.92rem;
+  }
+  .t-author span {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- About ---------- */
+  .about {
+    border-top: 1px solid var(--border);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .about-grid .lead { max-width: 56ch; font-size: 1.15rem; }
+  .about-philosophy {
+    padding: 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    display: grid;
+    gap: 1.5rem;
+  }
+  .about-philosophy .item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .about-philosophy .item:last-child { border: 0; padding-bottom: 0; }
+  .about-philosophy .item .k {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    white-space: nowrap;
+    padding-top: 0.2rem;
+  }
+  .about-philosophy .item .v {
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .about-philosophy .item .v em {
+    color: var(--purple-bright);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* ---------- Final CTA ---------- */
+  .cta-final {
+    border-top: 1px solid var(--border);
+    background:
+      radial-gradient(60% 80% at 50% 0%, var(--purple-glow) 0%, transparent 60%),
+      #0B0B0D;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .cta-final::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='52' viewBox='0 0 90 52'><g fill='none' stroke='%23ffffff' stroke-opacity='0.05' stroke-width='1'><polygon points='40,0 60,0 70,17.32 60,34.64 40,34.64 30,17.32'/><polygon points='10,17.32 30,17.32 40,34.64 30,51.96 10,51.96 0,34.64'/><polygon points='60,17.32 80,17.32 90,34.64 80,51.96 60,51.96 50,34.64'/></g></svg>");
+    background-size: 180px 104px;
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-final .container { position: relative; }
+  .cta-final .big-mark {
+    width: 72px;
+    color: var(--purple-bright);
+    margin: 0 auto 2rem;
+    opacity: 0.9;
+  }
+  .cta-final h2 {
+    font-size: clamp(2.25rem, 4.2vw, 3.75rem);
+    max-width: 22ch;
+    margin: 0 auto 1.5rem;
+    letter-spacing: -0.03em;
+  }
+  .cta-final p {
+    font-size: 1.1rem;
+    max-width: 54ch;
+    margin: 0 auto 2.5rem;
+    color: var(--text-muted);
+  }
+  .cta-final .actions {
+    display: inline-flex;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .cta-final .fine {
+    margin-top: 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- Footer ---------- */
+  footer.site {
+    border-top: 1px solid var(--border);
+    padding: 4rem 0 2.5rem;
+    background: var(--bg);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .footer-brand { display: grid; gap: 1.25rem; max-width: 34ch; }
+  .footer-brand p {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+  .footer-col h4 {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 1.2rem;
+    font-weight: 500;
+  }
+  .footer-col ul { display: grid; gap: 0.8rem; }
+  .footer-col a {
+    color: var(--text-muted);
+    font-size: 0.93rem;
+    transition: color 0.15s var(--ease);
+  }
+  .footer-col a:hover { color: var(--text); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+  .footer-bottom .tagline {
+    color: var(--text-muted);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      padding: 1rem var(--gutter) 2rem;
+      border-bottom: 1px solid var(--border);
+      align-items: stretch;
+    }
+    .nav-links.open a {
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 1rem;
+    }
+    .nav-toggle { display: flex; }
+    .nav-cta .btn-nav { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .fit-grid { grid-template-columns: 1fr; }
+    .phase { grid-template-columns: 1fr; gap: 1.25rem; }
+    .phase-num { display: flex; align-items: baseline; gap: 0.75rem; }
+    .phase-num .num { font-size: 2rem; }
+    .phase-tag { justify-self: start; }
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+    .footer-brand { grid-column: 1 / -1; }
+  }
+  @media (max-width: 520px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .hero-meta { gap: 0.75rem; }
+    .hero-meta .sep { display: none; }
+    .metric { padding: 1.5rem; }
+  }
+
+  /* ---------- Reveal on load (soft, staggered) ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: reveal 0.8s var(--ease) forwards;
+    }
+    .reveal.d1 { animation-delay: 0.05s; }
+    .reveal.d2 { animation-delay: 0.15s; }
+    .reveal.d3 { animation-delay: 0.25s; }
+    .reveal.d4 { animation-delay: 0.35s; }
+    .reveal.d5 { animation-delay: 0.45s; }
+    @keyframes reveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+
+  ::selection { background: var(--purple); color: #FFF; }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site" id="site-header">
+  <div class="container">
+    <nav class="nav" aria-label="Principal">
+      <a href="#top" class="brand" aria-label="Basalt — início">
+        <svg class="brand-mark" viewBox="0 0 90 52" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor">
+          <polygon points="40,0 60,0 70,17.32 60,34.64 40,34.64 30,17.32"/>
+          <polygon points="10,17.32 30,17.32 40,34.64 30,51.96 10,51.96 0,34.64"/>
+          <polygon points="60,17.32 80,17.32 90,34.64 80,51.96 60,51.96 50,34.64"/>
+        </svg>
+        <span class="brand-word">basalt</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#problema">Problema</a></li>
+        <li><a href="#metodologia">Metodologia</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#para-quem">Para quem é</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="#contato" class="btn btn-ghost btn-nav">Agendar Diagnóstico</a>
+        <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links" id="nav-toggle">
+          <span></span>
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-pattern" aria-hidden="true"></div>
+
+  <div class="container hero-inner">
+    <div class="eyebrow reveal d1">Build on bedrock.</div>
+
+    <h1 class="reveal d2">
+      O sistema operacional que sua equipe vai <i class="accent">realmente</i> usar.
+    </h1>
+
+    <p class="lead reveal d3">
+      Consultoria de projetos, sistemas e implementação de IA para PMEs e startups em fase de <em>scaling chaos</em>. Em 8 semanas, sua operação sai do improviso e passa a rodar em terreno firme — sem retrabalho em seis meses, sem dependência de consultor.
+    </p>
+
+    <div class="hero-ctas reveal d4">
+      <a href="#contato" class="btn btn-purple">
+        Agendar Diagnóstico
+        <svg class="arrow" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#metodologia" class="btn btn-ghost">Ver metodologia</a>
+    </div>
+
+    <div class="hero-meta reveal d5">
+      <span><span class="dot"></span>Aceitando projetos para Q3</span>
+      <span class="sep">·</span>
+      <span>São Paulo &amp; remoto (BR/Américas)</span>
+      <span class="sep">·</span>
+      <span>PT-BR / EN / ES</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEMA ============ -->
+<section class="problem" id="problema">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Scaling chaos</span>
+      <h2>A empresa cresceu. Os sistemas, não.</h2>
+      <p class="lead">
+        Entre 10 e 150 pessoas, existe uma fase em que o que funcionava em planilha vira um labirinto de Slacks, Sheets e Notions abandonados. Não é falta de estratégia. É falta de sistema. É assim que o cliente costuma nos descrever o momento:
+      </p>
+    </div>
+
+    <div class="quotes-grid">
+      <figure class="quote">
+        <blockquote>A gente cresceu rápido mas os processos não acompanharam.</blockquote>
+        <cite>Founder · SaaS B2B · 38 pessoas</cite>
+      </figure>
+      <figure class="quote">
+        <blockquote>Toda vez que entra alguém novo, é um caos. Cada um aprende de um jeito.</blockquote>
+        <cite>COO · Agência · 22 pessoas</cite>
+      </figure>
+      <figure class="quote">
+        <blockquote>Tenho dez ferramentas e ninguém usa direito nenhuma.</blockquote>
+        <cite>Head of Ops · Fintech · 55 pessoas</cite>
+      </figure>
+      <figure class="quote">
+        <blockquote>Quero me afastar do operacional mas não consigo. Tudo sobe pra mim.</blockquote>
+        <cite>CEO · Serviços profissionais · 41 pessoas</cite>
+      </figure>
+      <figure class="quote">
+        <blockquote>A gente tentou usar Notion mas virou bagunça. Ninguém confia no que tá lá.</blockquote>
+        <cite>Head of People · SaaS · 29 pessoas</cite>
+      </figure>
+      <figure class="quote">
+        <blockquote>Pagamos por IA há meses. Não encaixou em nada porque não tem processo por baixo.</blockquote>
+        <cite>COO · Consultoria · 18 pessoas</cite>
+      </figure>
+    </div>
+
+    <div class="problem-closer">
+      <p>
+        Se alguma dessas frases parece familiar, você está exatamente onde a Basalt entra. A gente não vende <strong>mais ferramentas</strong>. Vende a <strong>camada estrutural</strong> que faz qualquer ferramenta funcionar — e continuar funcionando quando a gente sair.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ METODOLOGIA ============ -->
+<section class="method" id="metodologia">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Metodologia · Bedrock Sprint</span>
+      <h2>8 semanas. 4 fases. Um sistema que fica.</h2>
+      <p class="lead">
+        O Bedrock Sprint é o produto principal da Basalt. Híbrido por design: <strong style="color:var(--text); font-weight:500;">Waterfall</strong> onde a certeza importa (não se itera sobre o que não se entendeu), <strong style="color:var(--text); font-weight:500;">Agile</strong> onde a realidade manda (o uso revela o que documento nenhum captura).
+      </p>
+    </div>
+
+    <div class="method-meta">
+      <span><strong>Duração</strong> · 8 semanas</span>
+      <span><strong>Equipe Basalt</strong> · 1 lead + 1 operador</span>
+      <span><strong>Dedicação do cliente</strong> · 1 champion, 5–10h/semana</span>
+      <span><strong>Entrega</strong> · sistema operacional rodando + autonomia transferida</span>
+    </div>
+
+    <div class="phases">
+      <article class="phase">
+        <div class="phase-num">
+          <span class="num">01</span>
+          <span>Semanas 1–2</span>
+        </div>
+        <div class="phase-body">
+          <h3>Mapping</h3>
+          <p class="question">Pergunta central: como o sistema realmente funciona hoje?</p>
+          <p class="description">
+            Entrevistas com 5–10 stakeholders-chave, auditoria do stack atual e inventário de processos recorrentes — incluindo os que ninguém documentou e vivem só na cabeça do fundador. Ninguém constrói sobre terreno que não conhece.
+          </p>
+        </div>
+        <span class="phase-tag waterfall">Waterfall</span>
+      </article>
+
+      <article class="phase">
+        <div class="phase-num">
+          <span class="num">02</span>
+          <span>Semanas 3–4</span>
+        </div>
+        <div class="phase-body">
+          <h3>Architecture</h3>
+          <p class="question">Pergunta central: qual é o sistema que deveria existir?</p>
+          <p class="description">
+            Blueprint antes de construção. Fonte da verdade por tipo de dado, modelo de permissões, governança, framework por área (Scrum, Kanban, Waterfall ou híbrido) e onde agentes de IA entram — e onde ainda não entram. Sign-off formal antes do Build.
+          </p>
+        </div>
+        <span class="phase-tag waterfall">Waterfall</span>
+      </article>
+
+      <article class="phase">
+        <div class="phase-num">
+          <span class="num">03</span>
+          <span>Semanas 5–6</span>
+        </div>
+        <div class="phase-body">
+          <h3>Build</h3>
+          <p class="question">Pergunta central: como isso roda na prática?</p>
+          <p class="description">
+            Notion (ou ferramenta escolhida) configurado com databases, views, templates e automações. Agentes de IA plugados via MCP para tarefas explícitas: triagem, resumos, pré-preenchimento. Ciclo Agile puro — demos semanais, ajustes no meio da semana, zero surpresa na Semana 8.
+          </p>
+        </div>
+        <span class="phase-tag agile">Agile</span>
+      </article>
+
+      <article class="phase">
+        <div class="phase-num">
+          <span class="num">04</span>
+          <span>Semanas 7–8</span>
+        </div>
+        <div class="phase-body">
+          <h3>Adoption</h3>
+          <p class="question">Pergunta central: a equipe vai usar isso quando a Basalt sair?</p>
+          <p class="description">
+            A fase mais negligenciada em consultoria, e a mais importante aqui. Champions internos formados, treinamento ao vivo, SOPs com vídeos curtos, rituais de manutenção e reviews aos 30/60/90 dias — inclusos. Sistema elegante que ninguém usa é sistema que não existe.
+          </p>
+        </div>
+        <span class="phase-tag agile">Agile</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVIÇOS ============ -->
+<section class="services" id="servicos">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Ofertas</span>
+      <h2>Três produtos encaixados.</h2>
+      <p class="lead">
+        O caminho canônico é <strong style="color:var(--text); font-weight:500;">Diagnostic → Sprint → Care</strong>, mas é possível entrar por qualquer um. O Diagnostic vira crédito integral para o Sprint se fechado em 30 dias. O Care só atende quem concluiu um Sprint.
+      </p>
+    </div>
+
+    <div class="offers">
+      <article class="offer">
+        <div class="offer-head">
+          <span class="offer-name">Bedrock Diagnostic</span>
+          <h3 class="offer-title">O raio-X da sua operação.</h3>
+          <span class="offer-duration">2 semanas · escopo fechado</span>
+        </div>
+        <p>
+          Auditoria profunda do sistema atual. Identificamos os 3–5 maiores bloqueios, mapeamos o que está duplicado e o que é tácito, e entregamos um roadmap acionável mesmo que você nunca feche o Sprint.
+        </p>
+        <ul>
+          <li>Current State Report (narrativa de 10–15 páginas)</li>
+          <li>Mapa de stakeholders + Jobs-to-be-done</li>
+          <li>Inventário de processos críticos</li>
+          <li>Roadmap priorizado de 90 dias</li>
+        </ul>
+      </article>
+
+      <article class="offer featured">
+        <div class="offer-head">
+          <span class="offer-name">Bedrock Sprint</span>
+          <h3 class="offer-title">Reconstrução completa do sistema operacional.</h3>
+          <span class="offer-duration">8 semanas · 4 fases · adoção garantida</span>
+        </div>
+        <p>
+          Do Mapping ao Adoption. Sistema rodando, time treinado, champions autônomos. Inclui revisões aos 30, 60 e 90 dias sem custo adicional e promessas mensuráveis verificadas em contrato.
+        </p>
+        <ul>
+          <li>Workspace completo (Notion ou equivalente)</li>
+          <li>Automações + integrações com agentes de IA (MCP)</li>
+          <li>Template library + SOPs com vídeos curtos</li>
+          <li>Champions Playbook + Team Training ao vivo</li>
+          <li>3 reviews pós-Sprint (30/60/90 dias)</li>
+        </ul>
+      </article>
+
+      <article class="offer">
+        <div class="offer-head">
+          <span class="offer-name">Bedrock Care</span>
+          <h3 class="offer-title">Manutenção evolutiva.</h3>
+          <span class="offer-duration">Mensal recorrente · só para graduados</span>
+        </div>
+        <p>
+          Empresas em crescimento têm necessidades evolutivas: novas contratações, tipos de projeto, integrações adicionais. O Care cuida disso sem você precisar contratar um novo Sprint a cada mudança.
+        </p>
+        <ul>
+          <li>1 sessão mensal de arquitetura (2h)</li>
+          <li>Até 8h/mês de evoluções de baixa complexidade</li>
+          <li>Suporte assíncrono aos champions</li>
+          <li>Review trimestral de maturidade do sistema</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARA QUEM É ============ -->
+<section class="for-whom" id="para-quem">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Para quem é</span>
+      <h2>A gente não serve todo mundo — e tudo bem.</h2>
+      <p class="lead">
+        Basalt é para empresas em um momento muito específico. Ser honesto sobre isso logo na primeira conversa economiza tempo dos dois lados.
+      </p>
+    </div>
+
+    <div class="fit-grid">
+      <div class="fit-col yes">
+        <h3>Fit <span class="badge">Servimos bem</span></h3>
+        <ul>
+          <li>PMEs B2B entre 15 e 50 pessoas (sweet spot: 20–35)</li>
+          <li>Receita entre R$1M e R$15M de ARR</li>
+          <li>Já usa ferramentas, mas de forma desconexa — Notion, Sheets, Slack, ClickUp</li>
+          <li>Founder ou C-level engajado no projeto, não só aprovando cheque</li>
+          <li>Pelo menos 1 champion interno disponível 5–10h/semana</li>
+          <li>Gatilho recente: contratação em massa, chegada de COO, Série A próxima, ou saída de pessoa-chave</li>
+        </ul>
+      </div>
+
+      <div class="fit-col no">
+        <h3>Sem fit <span class="badge">Ainda não é hora</span></h3>
+        <ul>
+          <li>Times com menos de 8 pessoas — ferramentas prontas ainda resolvem</li>
+          <li>Empresas procurando “um template de Notion” — a Basalt vende sistema, não ativo avulso</li>
+          <li>Sem champion interno disponível — adoção falha garantida</li>
+          <li>Liderança ausente — sistema novo morre na primeira reunião de diretoria</li>
+          <li>Empresas de 200+ pessoas — problema e concorrência diferentes</li>
+          <li>Expectativa de resultado em menos de 3 semanas — Mapping precisa de tempo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESULTADOS ============ -->
+<section class="results" id="resultados">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Promessas mensuráveis</span>
+      <h2>Não entregamos relatório bonito. Entregamos métrica verificada.</h2>
+      <p class="lead">
+        Toda proposta da Basalt inclui três compromissos aferidos aos 60 dias pós-Sprint. Não são metas aspiracionais — são gatilhos contratuais.
+      </p>
+    </div>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-label">01 · Adoção</div>
+        <div class="metric-value">≥80<span class="symbol">%</span></div>
+        <div class="metric-note">Da equipe usando ativamente o sistema, medido por atividade no workspace + pesquisa interna.</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">02 · Tempo de admin</div>
+        <div class="metric-value">−25<span class="symbol">%</span></div>
+        <div class="metric-note">Redução mínima em tempo gasto com status updates, busca de informação e retrabalho. Baseline medido na Semana 1.</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">03 · Autonomia</div>
+        <div class="metric-value">≥80<span class="symbol">%</span></div>
+        <div class="metric-note">Dos casos de operação resolvidos pelos champions internos sem precisar escalar para a Basalt.</div>
+      </div>
+    </div>
+
+    <div class="guarantee">
+      <strong>Garantia estrutural</strong>
+      Se qualquer um dos três não for atingido aos 60 dias, a Basalt retorna com até 20h de trabalho adicional sem custo até fechar o gap. É o incentivo estrutural para não entregar caos disfarçado de sistema.
+    </div>
+
+    <div class="testimonials" aria-label="Casos e depoimentos">
+      <figure class="testimonial placeholder">
+        <p class="t-quote">Espaço reservado para o próximo caso. Estamos montando o portfólio fundacional — founders da primeira safra recebem condição de amigo e se tornam cases permanentes.</p>
+        <figcaption class="t-author">
+          <strong>Vaga aberta</strong>
+          <span>Basalt · cliente fundador</span>
+        </figcaption>
+      </figure>
+      <figure class="testimonial placeholder">
+        <p class="t-quote">Espaço reservado para o próximo caso. Se você está lendo isso, provavelmente se encaixa no perfil. Vamos conversar.</p>
+        <figcaption class="t-author">
+          <strong>Vaga aberta</strong>
+          <span>Basalt · cliente fundador</span>
+        </figcaption>
+      </figure>
+      <figure class="testimonial placeholder">
+        <p class="t-quote">Espaço reservado para o próximo caso. Os três primeiros Sprints da Basalt viram estudo de caso público com métricas e arquitetura.</p>
+        <figcaption class="t-author">
+          <strong>Vaga aberta</strong>
+          <span>Basalt · cliente fundador</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOBRE ============ -->
+<section class="about" id="sobre">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <span class="eyebrow">Sobre a Basalt</span>
+        <h2 style="margin:1.25rem 0 1.5rem;">Uma consultoria construída sobre uma metáfora literal.</h2>
+        <p class="lead">
+          Basalto é a rocha que forma o <em style="color:var(--purple-bright); font-style:normal;">bedrock</em> — o leito da maior parte da crosta oceânica. Denso, durável, invisível, e sustenta tudo que é construído em cima.
+        </p>
+        <p class="lead" style="margin-top:1.25rem;">
+          Na Basalt, bedrock significa a camada abaixo da operação do dia a dia: fontes da verdade, processos nomeados, decisões de governança, agentes de IA encaixados em fluxos reais. Quando o bedrock está bem posto, as ferramentas em cima são intercambiáveis. Quando está mal posto, nenhuma ferramenta resolve.
+        </p>
+        <p class="lead" style="margin-top:1.25rem;">
+          Não entregamos documentação bonita. Entregamos sistemas que o time usa — estruturados, adotados e sustentáveis depois que a gente sai.
+        </p>
+      </div>
+
+      <aside class="about-philosophy" aria-label="Princípios">
+        <div class="item">
+          <span class="k">Princípio 01</span>
+          <span class="v">Framework é <em>ferramenta</em>, não identidade. Waterfall onde a certeza importa, Agile onde a realidade manda.</span>
+        </div>
+        <div class="item">
+          <span class="k">Princípio 02</span>
+          <span class="v">Arquitetura antes de construção. <em>Blueprint</em> antes de tocar no Notion. Escopo fechado antes do Build.</span>
+        </div>
+        <div class="item">
+          <span class="k">Princípio 03</span>
+          <span class="v">Adoção é entrega. Se a equipe volta ao Google Docs na segunda seguinte, o projeto <em>falhou</em> — por mais elegante que seja o workspace.</span>
+        </div>
+        <div class="item">
+          <span class="k">Princípio 04</span>
+          <span class="v">IA só se apoia em processo explícito. Antes de agentes, <em>bedrock</em>. Depois, o que for preciso.</span>
+        </div>
+        <div class="item">
+          <span class="k">Princípio 05</span>
+          <span class="v">Transparência radical em escopo, preço e métrica. <em>Promessa mensurável</em> ou não é proposta.</span>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="cta-final" id="contato">
+  <div class="container">
+    <svg class="big-mark" viewBox="0 0 90 52" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor">
+      <polygon points="40,0 60,0 70,17.32 60,34.64 40,34.64 30,17.32"/>
+      <polygon points="10,17.32 30,17.32 40,34.64 30,51.96 10,51.96 0,34.64"/>
+      <polygon points="60,17.32 80,17.32 90,34.64 80,51.96 60,51.96 50,34.64"/>
+    </svg>
+    <h2>Sua operação merece terreno firme.</h2>
+    <p>
+      Começa com um Diagnóstico de 2 semanas. Escopo fechado, preço claro, roadmap acionável mesmo se a gente não avançar juntos depois. Se fechar o Sprint em 30 dias, o valor do Diagnóstico é creditado integralmente.
+    </p>
+    <div class="actions">
+      <a href="mailto:contato@basaltconsultoria.com?subject=Diagn%C3%B3stico%20Basalt" class="btn btn-purple">
+        Agendar Diagnóstico
+        <svg class="arrow" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="mailto:contato@basaltconsultoria.com?subject=Conversa%20explorat%C3%B3ria" class="btn btn-ghost">Conversa exploratória (30 min)</a>
+    </div>
+    <p class="fine">Resposta em até 1 dia útil · Sem discovery call de vendas</p>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="brand" aria-label="Basalt — topo">
+          <svg class="brand-mark" viewBox="0 0 90 52" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor">
+            <polygon points="40,0 60,0 70,17.32 60,34.64 40,34.64 30,17.32"/>
+            <polygon points="10,17.32 30,17.32 40,34.64 30,51.96 10,51.96 0,34.64"/>
+            <polygon points="60,17.32 80,17.32 90,34.64 80,51.96 60,51.96 50,34.64"/>
+          </svg>
+          <span class="brand-word">basalt</span>
+        </a>
+        <p>Consultoria de projetos, sistemas e implementação de IA para empresas que cresceram mais rápido do que seus processos. São Paulo &amp; remoto, atendendo Brasil e Américas.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#problema">Problema</a></li>
+          <li><a href="#metodologia">Metodologia</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#para-quem">Para quem é</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Ofertas</h4>
+        <ul>
+          <li><a href="#servicos">Bedrock Diagnostic</a></li>
+          <li><a href="#servicos">Bedrock Sprint</a></li>
+          <li><a href="#servicos">Bedrock Care</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="mailto:contato@basaltconsultoria.com">contato@basaltconsultoria.com</a></li>
+          <li><a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="#contato">Agendar Diagnóstico</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Basalt Consultoria · Todos os direitos reservados</span>
+      <span class="tagline">Build on bedrock.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Header border-on-scroll
+  (function() {
+    const header = document.getElementById('site-header');
+    const onScroll = () => {
+      if (window.scrollY > 8) header.classList.add('scrolled');
+      else header.classList.remove('scrolled');
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  // Mobile menu toggle
+  (function() {
+    const btn = document.getElementById('nav-toggle');
+    const menu = document.getElementById('nav-links');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', () => {
+      const isOpen = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(isOpen));
+    });
+    menu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
